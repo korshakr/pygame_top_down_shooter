@@ -6,6 +6,8 @@ class Player:
         self.image.fill(conf.COLORS['RED'])
         self.player_rect = conf.pygame.Rect(conf.WINWIDTH // 2 - conf.X_CAMERA ,conf.WINHEIGHT // 2 - conf.Y_CAMERA,30,50)
 
+        self.isLive = True
+
 
 
     def check_collision(self,player,blocks):

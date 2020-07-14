@@ -2,6 +2,7 @@ import conf
 from player import Player
 from wall import Block
 from scope import Scope
+import enemy
 
 def draw_map(display):
     world = conf.pygame.Surface((conf.SURFACEWIDTH,conf.SURFACEHIGHT))
@@ -9,6 +10,8 @@ def draw_map(display):
 
     player = Player()
     scope = Scope()
+
+    enemy_lvl0 = enemy.monster_lvl0()
 
     camera_pos = (conf.X_CAMERA,conf.Y_CAMERA)
 
@@ -21,11 +24,18 @@ def draw_map(display):
             if event.type == conf.pygame.QUIT:
                 return
 
-            if event.type == conf.pygame.MOUSEBUTTONUP:
+            if event.type == conf.pygame.MOUSEBUTTONDOWN and event.button == 1:
                 scope.set_values(camera_pos)
                 
 
         camera_pos = player.move(camera_pos,blocks)
+
+        if player.player_rect.colliderect(enemy_lvl0.monster_lvl0_rect) and enemy_lvl0.health > 0:
+            player.isLive = False
+
+        if scope.point_rect.colliderect(enemy_lvl0.monster_lvl0_rect) and enemy_lvl0.health > 0:
+            enemy_lvl0.health -= 100
+            scope.set_default()
         
 
         display.fill(conf.COLORS['BLACK'])
@@ -33,16 +43,20 @@ def draw_map(display):
 
         for block in blocks:
             block.render(world)
-
-
        
+        if player.isLive:
+            player.render(world)
 
-        player.render(world)
+        if enemy_lvl0.health > 0:
+            enemy_lvl0.render(world)
+
+
         scope.render(world)
-        
+
+                
         display.blit(world,camera_pos)
 
-        conf.pygame.display.flip()
+        conf.pygame.display.update()
 
 
 def createBlocks(world):
