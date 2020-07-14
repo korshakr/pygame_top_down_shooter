@@ -1,24 +1,32 @@
 import conf
 from player import Player
 from wall import Block
+from scope import Scope
 
 def draw_map(display):
     world = conf.pygame.Surface((conf.SURFACEWIDTH,conf.SURFACEHIGHT))
-    world.fill(conf.COLORS['WHITE'])
+    # world.fill(conf.COLORS['WHITE'])
 
     player = Player()
+    scope = Scope()
+
     camera_pos = (conf.X_CAMERA,conf.Y_CAMERA)
 
     blocks = createBlocks(world)
-    for block in blocks:
-        block.render(world)
+    # for block in blocks:
+    #     block.render(world)
 
     while True:
         for event in conf.pygame.event.get():
             if event.type == conf.pygame.QUIT:
                 return
 
+            if event.type == conf.pygame.MOUSEBUTTONUP:
+                scope.set_values(camera_pos)
+                
+
         camera_pos = player.move(camera_pos,blocks)
+        
 
         display.fill(conf.COLORS['BLACK'])
         world.fill(conf.COLORS['WHITE'])
@@ -26,9 +34,11 @@ def draw_map(display):
         for block in blocks:
             block.render(world)
 
-        
+
+       
 
         player.render(world)
+        scope.render(world)
         
         display.blit(world,camera_pos)
 
