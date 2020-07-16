@@ -2,7 +2,7 @@ import conf
 import background
 
 def main():
-    background.draw_map(windowSurface)
+    background.draw_map(windowSurface,conf.FPS)
 
 
 
