@@ -38,8 +38,8 @@ def draw_map(display,fps):
             if event.type == conf.pygame.MOUSEBUTTONDOWN and event.button == 1:
                 bullets.append(Bullet(player.player_rect.center,angle))
 
-            elif conf.pygame.mouse.get_pressed()[0]:
-                bullets.append(Bullet(player.player_rect.center,angle))
+            # if conf.pygame.mouse.get_pressed()[0]:
+            #     bullets.append(Bullet(player.player_rect.center,angle))
                 
                 
         camera_pos = player.move(camera_pos,blocks)
@@ -63,7 +63,7 @@ def draw_map(display,fps):
         if player.isLive:
             player.render(world)
 
-        draw_enemies(world,enemies)
+        draw_enemies(world,player,enemies,blocks)
 
         draw_bullets(world,bullets,blocks,enemies)
                 
@@ -94,18 +94,18 @@ def createBlocks(world):
             
     
     for x in range(0,800,5):
-        if x in range(530,581):
+        if x in range(530,600):
             continue
         blocks.append(Block(x,800))
 
     return blocks
         
 
-def draw_enemies(display, enemies):
+def draw_enemies(display,player,enemies,blocks):
     if enemies:
         for enemy in enemies[:]:
             if enemy.health > 0: 
-                enemy.render(display)
+                enemy.render(display,player,blocks)
             else:
                 enemies.remove(enemy)
 
